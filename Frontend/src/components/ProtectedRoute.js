@@ -3,6 +3,7 @@ import {useEffect} from 'react';
 export default function ProtectedRoute({ component: Component, ...rest }) {
 
   const navigate = useNavigate();
+
   useEffect(() => {
     function checkToken(){
       const token = localStorage.getItem('jwt');

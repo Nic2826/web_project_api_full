@@ -46,7 +46,7 @@ export async function checkToken(token) {
         'Authorization': `Bearer ${token}`
       }
     });
-    console.log(response);
+    console.log("este e sel checktoken de auth",response);
     if(!response.ok)throw new Error("token no válido");
     const data = await response.json();
     return data;

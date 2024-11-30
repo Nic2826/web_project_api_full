@@ -7,14 +7,18 @@ const usersRoutes = require('./routes/users');
 const cardsRoutes = require('./routes/cards');
 const {loginUsers, createUsers} = require('./controllers/users');
 const errorHandler = require('./middleware/errorHandler');
+const {errors} = require('celebrate');
 
 app.use(cors());
 app.use(express.json());
 app.use(auth);
+
 // Ruta para registrar usuarios
 app.post('/signup', createUsers);
+
 // Ruta para iniciar sesión de usuarios
 app.post('/signin', loginUsers);
+
 // Middleware de manejo de errores centralizado
 app.use(errorHandler);
 
@@ -52,3 +56,4 @@ mongoose.connect('mongodb://localhost:27017/aroundb')
     next(err);
   });
 
+  app.use(errors());

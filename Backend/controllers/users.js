@@ -22,12 +22,13 @@ res.send(user);
 
 async function createUsers(req, res) {
   try{
-    console.log(req.body);
+    console.log("este es el usuario que se crea",req.body);
     const newUser = await User.create({
       email: req.body.email,
       password: req.body.password
     });
     res.send(newUser);
+    console.log("este es el usuario que se crea",req.body);
   }catch (err) {
     next(err);
   }
@@ -60,9 +61,10 @@ async function updateAvatar(req, res) {
       { avatar },
       { new: true, runValidators: true }
     ).orFail(() => {
-      const error = new Error("Avatar No encontrado");
-      error.statusCode = ERROR_CODE_NOT_FOUND; // Establecer un código de estado 404
-      throw error; // Arrojar el error para que sea manejado en el bloque catch
+      next(err);
+      // const error = new Error("Avatar No encontrado");
+      // error.statusCode = ERROR_CODE_NOT_FOUND; // Establecer un código de estado 404
+      // throw error; // Arrojar el error para que sea manejado en el bloque catch
     });
 
     res.send(updatedUser);

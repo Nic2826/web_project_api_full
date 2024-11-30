@@ -14,6 +14,7 @@ import ConfirmDeletePopup from './ConfirmDeletePopup.js';
 import Login from './Login.js';
 import Register from './Register.js';
 import ProtectedRoute from './ProtectedRoute.js';
+import ErrorBoundary from './ErrorBoundary.js';
 
 
 function App() {
@@ -76,7 +77,6 @@ function App() {
     async function getValues() {
       const response = await api.getUserInfo();
       setCurrentUser(response)
-      console.log("esta es la funcion getuserifo",response);
     }
     getValues();
   }, []);
@@ -104,7 +104,7 @@ function App() {
     setIsDeleteCardPopupOpen(false);
   }
 
-  //NOT SURE-------------------------------------------------------------------
+
   function handleUpdateUser(userData) {
     api.updateUserInfo(userData).then((newUser) => {
       console.log('Usuario actualizado:', newUser); // Verificar la respuesta
@@ -134,6 +134,7 @@ function App() {
         
         <CurrentUserContext.Provider value={currentUser}>
           <BrowserRouter>
+          <ErrorBoundary>
             <Routes>   
               <Route path="/signin" element={<Login />} />
               <Route path="/signup" element={<Register />} />
@@ -146,9 +147,9 @@ function App() {
                onCardLike={handleCardLike}
                onCardDelete={handleDeleteClick} />
                } />
-               
-
+          
             </Routes>
+            </ErrorBoundary>
           </BrowserRouter>
 
           <Footer />

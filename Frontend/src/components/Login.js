@@ -18,17 +18,27 @@ export default function Login() {
   const navigate = useNavigate();
 
   useEffect(() =>{
+
     async function reviewToken() {
-      const token = localStorage.getItem('jwt');
-      if (token) {
+      try {
+        const token = localStorage.getItem('jwt');
+        if (!token) {
+          console.log('No hay token disponible');
+          return; // No hace nada si no hay token
+        }
+  
         const response = await checkToken(token);
-        console.log("checktoken",response);
-        if(response.user){
+        console.log('Usuario validado:', response);
+        if (response.user) {
           navigate('/');
         }
-        return
+      } catch (error) {
+        console.error('Error validando el token:', error.message);
+        // Puedes redirigir al usuario al inicio de sesión si el token no es válido
+        navigate('/signin');
       }
     }
+    
     reviewToken();
   },[navigate]);
 
