@@ -19,8 +19,10 @@ app.use(express.json());
 app.use(requestLogger);
 
 // 3. Ruta de prueba para error
-app.get('/test-error', (req, res) => {
-  throw new Error('Este es un error de prueba');
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('El servidor va a caer');
+  }, 0);
 });
 
 // 4. Rutas públicas (no requieren autenticación)
@@ -66,6 +68,6 @@ mongoose.connect('mongodb://localhost:27017/aroundb')
   });
 
 // 13. Iniciar el servidor
-app.listen(5000, '35.227.169.227', () => {
-  console.log('Servidor corriendo en http://35.227.169.227:5000');
+app.listen(5000, 'localhost', () => {
+  console.log('Servidor corriendo en http://localhost:5000');
 });
