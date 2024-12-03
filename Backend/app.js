@@ -10,62 +10,62 @@ const errorHandler = require('./middleware/errorHandler');
 const {errors} = require('celebrate');
 const { requestLogger, errorLogger } = require('./middleware/logger');
 
-app.use(requestLogger);// habilitar el logger de solicitud
+// 1. Primero las configuraciones básicas
 app.use(cors());
-app.options('*', cors());//habilitar las solicitudes de todas las rutas
+app.options('*', cors());
 app.use(express.json());
-app.use(auth);
 
-// Ruta para registrar usuarios
+// 2. Logger de solicitudes
+app.use(requestLogger);
+
+// 3. Ruta de prueba para error
+app.get('/test-error', (req, res) => {
+  throw new Error('Este es un error de prueba');
+});
+
+// 4. Rutas públicas (no requieren autenticación)
 app.post('/signup', createUsers);
-
-// Ruta para iniciar sesión de usuarios
 app.post('/signin', loginUsers);
 
-app.use(errorLogger); // habilitar el logger de errores
+// 5. Middleware de autenticación
+app.use(auth);
 
-// Middleware de manejo de errores centralizado
-app.use(errorHandler);
-
-
+// 6. Configuración de usuario de prueba
 app.use((req, res, next) => {
   req.user = {
-    _id: '67200dd2a9ca0d3e2980c321' // pega el _id del usuario de prueba que creamos en el paso anterior
+    _id: '67200dd2a9ca0d3e2980c321'
   };
-
   next();
 });
 
-// Usar las rutas definidas en /routes
+// 7. Rutas protegidas
 app.use('/users', usersRoutes);
 app.use('/cards', cardsRoutes);
 
-// Ruta para manejar direcciones no existentes
+// 8. Ruta 404
 app.use((req, res) => {
   res.status(404).json({ message: 'Recurso solicitado no encontrado' });
 });
 
-// Iniciar el servidor
-// const PORT = 5000;
-// app.listen(PORT, () => {
-//   console.log(`Servidor corriendo en http://localhost:${PORT}`);
-// });
+// 9. Logger de errores
+app.use(errorLogger);
 
-app.listen(5000, '0.0.0.0', () => {
-  console.log('Servidor corriendo en http://0.0.0.0:5000');
-});
+// 10. Manejo de errores de celebrate
+app.use(errors());
 
+// 11. Manejador de errores central
+app.use(errorHandler);
 
+// 12. Conexión a MongoDB
 mongoose.connect('mongodb://localhost:27017/aroundb')
   .then(() => {
     console.log('conectado a la base de datos');
   })
   .catch((err) => {
-    next(err);
+    console.error('Error conectando a MongoDB:', err);
   });
 
-  app.use(errors());
-
-  app.use((err, req, res, next) => {
-    res.status(err.status || 500).send({ message: err.message });
-  });
+// 13. Iniciar el servidor
+app.listen(5000, '35.227.169.227', () => {
+  console.log('Servidor corriendo en http://35.227.169.227:5000');
+});
