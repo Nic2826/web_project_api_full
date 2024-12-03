@@ -70,6 +70,6 @@ mongoose.connect('mongodb://localhost:27017/aroundb')
   });
 
 // 13. Iniciar el servidor
-app.listen(5000, '35.227.169.227', () => {
-  console.log('Servidor corriendo en http://35.227.169.227:5000');
+app.listen(3000, () => {
+  console.log('Servidor corriendo en el puerto 3000');
 });
