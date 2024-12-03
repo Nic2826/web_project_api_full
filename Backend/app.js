@@ -10,13 +10,15 @@ const errorHandler = require('./middleware/errorHandler');
 const {errors} = require('celebrate');
 const { requestLogger, errorLogger } = require('./middleware/logger');
 
+// 2. Logger de solicitudes
+app.use(requestLogger);
+
 // 1. Primero las configuraciones básicas
 app.use(cors());
 app.options('*', cors());
 app.use(express.json());
 
-// 2. Logger de solicitudes
-app.use(requestLogger);
+
 
 // 3. Ruta de prueba para error
 app.get('/crash-test', () => {
@@ -68,6 +70,6 @@ mongoose.connect('mongodb://localhost:27017/aroundb')
   });
 
 // 13. Iniciar el servidor
-app.listen(5000, 'localhost', () => {
-  console.log('Servidor corriendo en http://localhost:5000');
+app.listen(5000, '35.227.169.227', () => {
+  console.log('Servidor corriendo en http://35.227.169.227:5000');
 });
