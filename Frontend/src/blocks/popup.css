@@ -49,6 +49,15 @@
   justify-content: center;
 }
 
+.popup__button-save_disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.popup__button-save_disabled:hover {
+  opacity: 1;
+}
+
 .popup__close-icon {
   width: 26px;
   height: 26px;
@@ -125,6 +134,8 @@
   font-family: Inter;
   color: #FF0000;
 }
+
+
 
 .popup__line {
   height: 1px;

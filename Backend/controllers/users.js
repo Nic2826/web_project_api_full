@@ -22,7 +22,6 @@ res.send(user);
 
 async function createUsers(req, res) {
   try{
-    console.log("este es el usuario que se crea",req.body);
     const newUser = await User.create({
       email: req.body.email,
       password: req.body.password
@@ -34,24 +33,33 @@ async function createUsers(req, res) {
   }
 };
 
-async function updateUser (req, res) {
+async function updateUser(req, res, next) {
   try {
-    const { name, email } = req.body; // Asegúrate de que estos campos existan en el body
+    const { name, email } = req.body;
+
+    // Crear objeto de actualización solo con los campos proporcionados
+    const updateData = {};
+    if (name) updateData.name = name;
+    if (email) updateData.email = email;
+
     const updatedUser = await User.findByIdAndUpdate(
       req.user._id,
-      { name, email },
-      { new: true, runValidators: true } // Devuelve el nuevo documento y aplica validadores
+      updateData,
+      { new: true, runValidators: true }
     ).orFail(() => {
-      const error = new Error("Usuario No encontrado");
-      error.statusCode = ERROR_CODE_NOT_FOUND; // Establecer un código de estado 404
-      throw error; // Arrojar el error para que sea manejado en el bloque catch
+      const error = new Error("Usuario no encontrado");
+      error.statusCode = ERROR_CODE_NOT_FOUND;
+      throw error;
     });
 
     res.send(updatedUser);
   } catch (err) {
+    if (err.name === 'ValidationError') {
+      err.statusCode = ERROR_CODE_BAD_REQUEST;
+    }
     next(err);
   }
-};
+}
 
 async function updateAvatar(req, res) {
   try {

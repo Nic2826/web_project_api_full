@@ -12,6 +12,8 @@ class Api {
     .then(res => {
       if (res.ok) {
         return res.json();
+      } else{
+        throw new Error(`Error: ${res.status}`);
       }
     })
     .catch((err) => {
@@ -40,17 +42,16 @@ class Api {
       method: "PATCH",
       headers: this.headers,
       body: JSON.stringify({
-        email: data.email,
-        password: data.password,
         name: data.name,
         about: data.about,
         avatar: data.avatar,
-        _id: data._id
       })
     })
     .then(res => {
       if (res.ok) {
         return res.json();
+      } else{
+        throw new Error(`Error: ${res.status}`);
       }
     })
     .catch((err) => {

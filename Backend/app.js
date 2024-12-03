@@ -8,8 +8,11 @@ const cardsRoutes = require('./routes/cards');
 const {loginUsers, createUsers} = require('./controllers/users');
 const errorHandler = require('./middleware/errorHandler');
 const {errors} = require('celebrate');
+const { requestLogger, errorLogger } = require('./middleware/logger');
 
+app.use(requestLogger);// habilitar el logger de solicitud
 app.use(cors());
+app.options('*', cors());//habilitar las solicitudes de todas las rutas
 app.use(express.json());
 app.use(auth);
 
@@ -19,10 +22,10 @@ app.post('/signup', createUsers);
 // Ruta para iniciar sesión de usuarios
 app.post('/signin', loginUsers);
 
+app.use(errorLogger); // habilitar el logger de errores
+
 // Middleware de manejo de errores centralizado
 app.use(errorHandler);
-
-
 
 
 app.use((req, res, next) => {
@@ -57,3 +60,7 @@ mongoose.connect('mongodb://localhost:27017/aroundb')
   });
 
   app.use(errors());
+
+  app.use((err, req, res, next) => {
+    res.status(err.status || 500).send({ message: err.message });
+  });

@@ -19,6 +19,17 @@ export default function Main(props) {
     console.log('clicked on cerrar sesion');
   }
 
+  if (props.isLoading) {
+    return <div className="loader-container">
+      <div className="loader"></div>
+    </div>;
+  }
+  
+if (!currentUser || !currentUser.name) {
+    return <div className="loader-container">
+      <div className="loader"></div>
+    </div>;
+  }
 
   return (
     <main className="content">

@@ -23,7 +23,7 @@ function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
-  
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedCard, setSelectedCard] = useState({});
   const [isDeleteCardPopupOpen, setIsDeleteCardPopupOpen] = useState(false);
   const [cardToDelete, setCardToDelete] = useState(null);
@@ -75,8 +75,15 @@ function App() {
 
   useEffect(() => {
     async function getValues() {
-      const response = await api.getUserInfo();
-      setCurrentUser(response)
+      try {
+        setIsLoading(true);
+        const response = await api.getUserInfo();
+        setCurrentUser(response);
+      } catch (error) {
+        console.error('Error fetching user info:', error);
+      } finally {
+        setIsLoading(false);
+      }
     }
     getValues();
   }, []);
@@ -105,20 +112,36 @@ function App() {
   }
 
 
-  function handleUpdateUser(userData) {
-    api.updateUserInfo(userData).then((newUser) => {
-      console.log('Usuario actualizado:', newUser); // Verificar la respuesta
-      setCurrentUser(newUser);
-      closeAllPopups();
-    })
+  async function handleUpdateUser(userData) {
+    try {
+      const newUser = await api.updateUserInfo(userData);
+      console.log('Usuario actualizado:', newUser);
+      if (newUser) {
+        setCurrentUser(prevUser => ({
+          ...prevUser,
+          ...newUser
+        }));
+        closeAllPopups();
+      }
+    } catch (error) {
+      console.error('Error al actualizar el usuario:', error);
+    }
   }
 
   function handleUpdateAvatar(avatar) {
-    api.updateAvatar(avatar).then((newAvatar) => {
-      console.log('Avatar actualizado:', newAvatar);
-      setCurrentUser(newAvatar);
-      closeAllPopups();
-    })
+    console.log('handleUpdateAvatar recibió:', avatar);
+    
+    return api.updateAvatar(avatar)
+      .then((newUser) => {
+        console.log('Respuesta de la API:', newUser);
+        setCurrentUser(newUser);
+        closeAllPopups();
+        return newUser;
+      })
+      .catch((error) => {
+        console.error('Error detallado en handleUpdateAvatar:', error);
+        throw error;
+      });
   }
 
   function handleAddPlace(data) {
@@ -143,6 +166,7 @@ function App() {
                onEditProfileClick={handleEditProfileClick}
                onAddPlaceClick={handleAddPlaceClick}
                onCardClick={handleCardClick}
+               isLoading={isLoading}
                cards={cards}
                onCardLike={handleCardLike}
                onCardDelete={handleDeleteClick} />
