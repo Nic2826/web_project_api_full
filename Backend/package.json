@@ -6,8 +6,7 @@
   "scripts": {
     "lint": "npx eslint",
     "start": "node app.js",
-    "dev": "nodemon app.js",
-    "deploy": "npm run build && scp -r ./build/* tripletenuser@domainname.example.com:/home/tripletenuser/around-frontend"
+    "dev": "nodemon app.js"
   },
   "repository": {
     "type": "git",
