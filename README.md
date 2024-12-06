@@ -1,1 +1,4 @@
 # Tripleten web_project_api_full
+ Esta es una página dinámica conectada a un servidor de Google a través de un dominio gratuito de FreeDNS. Utiliza React, Node.js y MongoDB. La página incluye funcionalidades como pop-ups, envío de información mediante componentes de React, diseño responsive, y metodología BEM en el nombramiento de clases. Además, incorpora validaciones para prevenir formularios vacíos o con datos incorrectos, activación de botones de likes, expansión de imágenes publicadas, y la opción de añadir y eliminar imágenes. También implementa login, registro con validaciones, gestión de rutas, y una API para conectarse al servidor con autenticación
+
+ Acceso a la página: https://nicolle.away.pk/ 
