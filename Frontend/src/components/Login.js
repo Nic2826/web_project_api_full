@@ -124,7 +124,7 @@ export default function Login() {
         isOpen={isInfoTooltipOpen} 
         onClose={closePopup}
         name="error"
-        text="Uy, algo salió mal.Por favor inténtalo de nuevo."/>
+        text="Uy, algo salió mal. Por favor inténtalo de nuevo."/>
     </Test>
   )
 }

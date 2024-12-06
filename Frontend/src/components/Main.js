@@ -10,6 +10,7 @@ export default function Main(props) {
 
   const navigate = useNavigate();
   const [isHeaderClicked, setIsHeaderClicked] = useState(false);
+  const [isTopHeaderVisible, setIsTopHeaderVisible] = useState(false); 
   const currentUser = useContext(CurrentUserContext);
 
   function handleChangeRoute() {
@@ -18,6 +19,11 @@ export default function Main(props) {
     setIsHeaderClicked(true);
     console.log('clicked on cerrar sesion');
   }
+
+  function handleTopHeaderClick() {
+    setIsTopHeaderVisible(!isTopHeaderVisible);
+  }
+
 
   if (props.isLoading) {
     return <div className="loader-container">
@@ -36,9 +42,12 @@ if (!currentUser || !currentUser.name) {
 
       <Header
         onClick={handleChangeRoute}
+        onTopHeaderClick={handleTopHeaderClick}
         isHeaderClicked={isHeaderClicked}
+        isVisible={isTopHeaderVisible}
         headerTitle="Cerrar sesión"
-        headerEmail={currentUser.name} />
+        headerEmail={currentUser.name}
+        isMainPage={true} />
 
       <section className="profile">
         <div className="profile__image" onClick={props.onEditAvatarClick}>

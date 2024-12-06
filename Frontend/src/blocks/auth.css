@@ -25,7 +25,6 @@
     width: 354px;
     line-height: 30px;
     margin-top: 30px;
-    /* margin: auto; */
 }
 
 .popup__button-save-auth{
@@ -50,4 +49,15 @@
     font-weight: 400;
     color: #FF0000;
     font-size: 12px;
+}
+
+@media screen and (max-width: 640px) {
+
+.auth__label {
+    width: 238px;
+  }
+
+  .auth__footer{
+    font-size: 12px;
+  }
 }
