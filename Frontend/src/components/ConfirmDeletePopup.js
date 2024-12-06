@@ -1,12 +1,13 @@
 import React from 'react'
 import PopUpWithForm from './PopUpWithForm';
 
-export default function ConfirmDeletePopup({ isOpen, onClose, onConfirm }) {
+export default function ConfirmDeletePopup({ isOpen, onClose, onConfirm, card }) {
   
   function handleSubmit(e) {
     e.preventDefault();
-    onConfirm(); // Llamamos a la función de confirmación de eliminación
+    onConfirm(); 
   }
+
 
   return (
     <PopUpWithForm

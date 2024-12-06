@@ -7,7 +7,7 @@ import api from '../utils/Api';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import EditProfilPopup from './EditProfilPopup.js';
+import EditProfilePopup from './EditProfilePopup.js';
 import EditAvatarPopup from './EditAvatarPopup.js';
 import AddPlacePopup from './AddPlacePopup.js';
 import ConfirmDeletePopup from './ConfirmDeletePopup.js';
@@ -26,7 +26,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCard, setSelectedCard] = useState({});
   const [isDeleteCardPopupOpen, setIsDeleteCardPopupOpen] = useState(false);
-  const [cardToDelete, setCardToDelete] = useState(null);
+  const [cardToDelete, setCardToDelete] = useState({});
   const [currentUser, setCurrentUser] = useState({
     email:'',
     password:'',
@@ -52,15 +52,19 @@ function App() {
 
   // Confirmar eliminación
   function handleConfirmDelete() {
-    api.deleteCard(cardToDelete._id)
-      .then(() => {
-        setCards((state) => state.filter((c) => c._id !== cardToDelete._id));
-        setIsDeleteCardPopupOpen(false); // Cerramos el popup después de eliminar
-        setCardToDelete(null); // Limpiamos la tarjeta a eliminar
-      })
-      .catch((err) => {
-        console.error('Error al eliminar la tarjeta:', err);
-      });
+    if (cardToDelete) {
+      api.deleteCard(cardToDelete._id)
+        .then(() => {
+          // Filtrar las tarjetas para eliminar la seleccionada
+          setCards((state) => state.filter((c) => c._id !== cardToDelete._id));
+          setIsDeleteCardPopupOpen(false); // Cierra el popup
+          setCardToDelete(null); // Limpia la tarjeta seleccionada
+          console.log('Tarjeta eliminada', cardToDelete._id );
+        })
+        .catch((err) => {
+          console.error('Error al eliminar la tarjeta:', err);
+        });
+    }
   }
 
   function handleCardLike(card) {
@@ -99,7 +103,7 @@ function App() {
   }
 
   function handleCardClick(card) {
-    setSelectedCard(card);
+    setSelectedCard (card);
     setIsImagePopupOpen(true);
   }
 
@@ -186,7 +190,7 @@ function App() {
           />
 
           {/* ---------------------PROFILE--------------------- */}
-          <EditProfilPopup
+          <EditProfilePopup
             isOpen={isEditProfilePopupOpen}
             onClose={closeAllPopups}
             onUpdateUser={handleUpdateUser}

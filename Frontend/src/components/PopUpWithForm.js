@@ -20,9 +20,9 @@ export default function PopUpWithForm(props) {
                             <h2 className="popup__heading">{props.title}</h2>
                             {props.children}
                             <button 
-                                className={`popup__button-save popup__button-save-profile ${!props.isValid ? 'popup__button-save_disabled' : ''}`}
+                                className={`popup__button-save ${props.isValid ? 'popup__button-save_disabled' : ''}`}
                                 type="submit"
-                                disabled={!props.isValid}
+                                
                             >
                                 {props.buttonText || 'Guardar'}
                             </button>
