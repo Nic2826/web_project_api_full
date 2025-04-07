@@ -89,7 +89,7 @@ async function loginUsers(req, res) {
       return res.status(ERROR_CODE_BAD_REQUEST).send({ message: 'Usuario no encontrado' });
     }
 
-    // Aquí generas el token si el usuario existe
+    // Aquí se genera el token si el usuario existe
     const token = generateToken(user);
     res.send({ token });
 
